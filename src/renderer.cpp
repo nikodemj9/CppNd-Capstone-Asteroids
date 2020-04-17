@@ -1,6 +1,8 @@
 #include "renderer.h"
 #include <iostream>
 #include <string>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 Renderer::Renderer(const std::size_t screen_width,
                    const std::size_t screen_height,
@@ -31,6 +33,33 @@ Renderer::Renderer(const std::size_t screen_width,
     std::cerr << "Renderer could not be created.\n";
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
   }
+
+  // Load ship texture
+  std::string filepath = "spaceship.png";
+
+	//Load image at specified path
+	SDL_Surface* loadedSurface = IMG_Load( filepath.c_str() );
+	if( loadedSurface == NULL )
+	{
+		printf( "Unable to load image %s! SDL_image Error: %s\n", filepath.c_str(), IMG_GetError() );
+	}
+	else
+	{
+		//Color key image
+		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
+
+		//Create texture from surface pixels
+        ship_texture = SDL_CreateTextureFromSurface( sdl_renderer, loadedSurface );
+		if( ship_texture == NULL )
+		{
+			printf( "Unable to create texture from %s! SDL Error: %s\n", filepath.c_str(), SDL_GetError() );
+		}
+
+		//Get rid of old loaded surface
+		SDL_FreeSurface( loadedSurface );
+	}
+
+
 }
 
 Renderer::~Renderer() {
@@ -40,8 +69,8 @@ Renderer::~Renderer() {
 
 void Renderer::Render(Spaceship *spaceship) {
   SDL_Rect block;
-  block.w = screen_width / grid_width;
-  block.h = screen_height / grid_height;
+  block.w = screen_width / grid_width * 20;
+  block.h = screen_height / grid_height * 20;
 
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
@@ -56,7 +85,7 @@ void Renderer::Render(Spaceship *spaceship) {
   while (block.x < 0) { block.x += screen_width;};
   while (block.y > screen_width) { block.y -= screen_height;};
   while (block.y < 0) { block.y += screen_height;};
-  SDL_RenderFillRect(sdl_renderer, &block);
+  SDL_RenderCopyEx(sdl_renderer, ship_texture, NULL, &block, spaceship->Angle(), NULL, SDL_FLIP_NONE);
 
   // Update Screen
   SDL_RenderPresent(sdl_renderer);

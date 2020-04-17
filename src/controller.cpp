@@ -28,19 +28,15 @@ void Controller::HandleInput(bool &running, Spaceship *spaceship) const {
         case SDLK_UP:
           ChangeSpeed(spaceship, true);
           break;
-
         case SDLK_DOWN:
           ChangeSpeed(spaceship, false);
           break;
-
         case SDLK_LEFT:
           ChangeRotation(spaceship, false);
           break;
-
         case SDLK_RIGHT:
           ChangeRotation(spaceship, true);
           break;
-
         case SDLK_SPACE:
           spaceship->Shoot();
           break;

@@ -8,6 +8,7 @@ public:
     virtual void Simulate() = 0;
     float X() {return x;};
     float Y() {return y;};
+    float Angle() { return angle;};
 
 protected:
     SpaceObject(float x, float y, float angle, float speed);
