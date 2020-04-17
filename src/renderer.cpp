@@ -52,6 +52,10 @@ void Renderer::Render(Spaceship *spaceship) {
   SDL_SetRenderDrawColor(sdl_renderer, 38, 128, 197, 1);
   block.x = spaceship->X() * block.w;
   block.y = spaceship->Y() * block.h;
+  while (block.x > screen_width) { block.x -= screen_width;};
+  while (block.x < 0) { block.x += screen_width;};
+  while (block.y > screen_width) { block.y -= screen_height;};
+  while (block.y < 0) { block.y += screen_height;};
   SDL_RenderFillRect(sdl_renderer, &block);
 
   // Update Screen
