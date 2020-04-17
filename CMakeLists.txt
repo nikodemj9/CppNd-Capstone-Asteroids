@@ -12,6 +12,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} src include)
 
-add_executable(Asteroids src/main.cpp src/game.cpp)
+add_executable(Asteroids 
+src/asteroid.cpp
+src/controller.cpp
+src/game.cpp 
+src/main.cpp 
+src/renderer.cpp
+src/spaceobject.cpp
+src/spaceship.cpp
+)
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 target_link_libraries(Asteroids ${SDL2_LIBRARIES})
