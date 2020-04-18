@@ -60,6 +60,11 @@ void Game::Update() {
         asteroid->Move();
     }
 
+    for (auto &rocket : rockets)
+    {
+        rocket->Move();
+    }
+
     // Check hitboxes???
 
 }

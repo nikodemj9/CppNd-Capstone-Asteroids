@@ -19,7 +19,7 @@ class Spaceship : public SpaceObject {
         void Float();
 
     private:
-        const float acceleration{0.01};
+        const float acceleration{0.1};
         const float angular_acc{5};
         const float inertia{0.001};
         const float rockets_speed{0.1};

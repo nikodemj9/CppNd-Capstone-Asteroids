@@ -1,7 +1,11 @@
 #include "controller.h"
 #include <iostream>
-#include "SDL.h"
 
+Controller::Controller ()
+{
+  keyboard_state_array = SDL_GetKeyboardState(NULL);
+  event = std::make_unique<SDL_Event>();
+}
 
 void Controller::ChangeRotation(Spaceship *spaceship, bool positive) const
 {
@@ -19,28 +23,36 @@ void Controller::Shoot(Spaceship *spaceship)
 }
 
 void Controller::HandleInput(bool &running, Spaceship *spaceship) const {
-  SDL_Event e;
-  while (SDL_PollEvent(&e)) {
-    if (e.type == SDL_QUIT) {
+
+  while (SDL_PollEvent(event.get()))
+  {
+  if (event->type == SDL_QUIT) 
+  {
       running = false;
-    } else if (e.type == SDL_KEYDOWN) {
-      switch (e.key.keysym.sym) {
-        case SDLK_UP:
+  } 
+  else if(event->type == SDL_KEYDOWN || event->type == SDL_KEYUP)
+  {
+    // Move centerpoint of rotation for one of the trees:
+    if (keyboard_state_array[SDL_SCANCODE_UP])
+    {
           ChangeSpeed(spaceship, true);
-          break;
-        case SDLK_DOWN:
-          ChangeSpeed(spaceship, false);
-          break;
-        case SDLK_LEFT:
-          ChangeRotation(spaceship, false);
-          break;
-        case SDLK_RIGHT:
-          ChangeRotation(spaceship, true);
-          break;
-        case SDLK_SPACE:
-          spaceship->Shoot();
-          break;
-      }
     }
+    if (keyboard_state_array[SDL_SCANCODE_DOWN])
+    {
+          ChangeSpeed(spaceship, false);
+    }
+    if (keyboard_state_array[SDL_SCANCODE_LEFT])
+    {
+          ChangeRotation(spaceship, false);
+    }
+    if (keyboard_state_array[SDL_SCANCODE_RIGHT])
+    {
+          ChangeRotation(spaceship, true);
+    }
+    if (keyboard_state_array[SDL_SCANCODE_SPACE])
+    {
+          spaceship->Shoot();
+    }
+  }
   }
 }
