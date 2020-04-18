@@ -25,7 +25,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
         // Input, Update, Render - the main game loop.
         controller.HandleInput(running, spaceship.get());
         Update();
-        renderer.Render(spaceship.get());
+        Render(renderer);
 
         frame_end = SDL_GetTicks();
 
@@ -47,6 +47,20 @@ void Game::Run(Controller const &controller, Renderer &renderer,
         if (frame_duration < target_frame_duration) {
             SDL_Delay(target_frame_duration - frame_duration);
         }
+    }
+
+}
+
+void Game::Render(Renderer &renderer) {
+    renderer.ClearScreen();
+    renderer.Render(spaceship.get());
+    for (auto &asteroid : asteroids)
+    {
+        renderer.Render(asteroid.get());
+    }
+    for (auto &rocket : rockets)
+    {
+        renderer.Render(rocket.get());
     }
 
 }

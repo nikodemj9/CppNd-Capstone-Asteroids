@@ -39,6 +39,7 @@ void Spaceship::Accelerate(bool positive)
 Rocket Spaceship::Shoot()
 {
     return Rocket(x, y, angle, rockets_speed);
+    // gameHandle->rockets.emplace_back(Rocket(x, y, angle, rockets_speed + speed));
 }
 
 void Spaceship::Simulate()
