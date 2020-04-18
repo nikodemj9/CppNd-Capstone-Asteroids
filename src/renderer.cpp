@@ -36,6 +36,7 @@ Renderer::Renderer(const std::size_t screen_width,
   ship_texture = IMG_LoadTexture(sdl_renderer, "spaceship.png");
   sky_texture = IMG_LoadTexture(sdl_renderer, "nightsky.png");
   rocket_texture = IMG_LoadTexture(sdl_renderer, "rocket.png");
+  asteroid_texture = IMG_LoadTexture(sdl_renderer, "asteroid.png");
  
 }
 
@@ -59,22 +60,18 @@ void Renderer::ClearScreen() {
 }
 
 void Renderer::Render(Spaceship *spaceship) {
-
   
-  // Render Ship
   spaceship->NormalizePosition(screen_width, screen_height);
   SDL_RenderCopyEx(sdl_renderer, ship_texture, NULL, spaceship->Box(), spaceship->Angle(), NULL, SDL_FLIP_NONE);
 }
 
 void Renderer::Render(Rocket *rocket) {
-
-  // Render Rocket
   SDL_RenderCopyEx(sdl_renderer, rocket_texture, NULL, rocket->Box(), rocket->Angle(), NULL, SDL_FLIP_NONE);
 }
 
 void Renderer::Render(Asteroid *asteroid)
 {
-
+  SDL_RenderCopyEx(sdl_renderer, asteroid_texture, NULL, asteroid->Box(), asteroid->Angle(), NULL, SDL_FLIP_NONE);
 }
 
 void Renderer::Render()

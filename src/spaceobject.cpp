@@ -1,7 +1,7 @@
 #include "spaceobject.h"
 #include <cmath>
 
-const double pi = std::acos(-1);
+const double pi = 3.14159265359;
 
 SpaceObject::SpaceObject(float x, float y, float angle, float speed) :
     angle(angle), speed(speed) {

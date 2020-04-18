@@ -69,6 +69,8 @@ void Game::Render(Renderer &renderer) {
 
 void Game::Update() {
 
+    PlaceAsteroid();
+
     std::vector<std::thread> moving_objects;
 
     moving_objects.emplace_back(std::thread(&Spaceship::Simulate,spaceship.get()));
@@ -115,4 +117,12 @@ void Game::PlaceAsteroid()
     // calculate random x or y, set another coordinate to 0
     // calculate speed
     // create asteroid on heap, move to vector
+
+    // Test one
+    if (score < 2){
+    asteroids.emplace_back(std::make_unique<Asteroid>(10, 10, 45, 2));
+    score++;
+    }
+
+    
 }

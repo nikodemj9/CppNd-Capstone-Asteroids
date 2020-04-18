@@ -22,6 +22,7 @@ class Renderer {
   SDL_Texture* ship_texture;
   SDL_Texture* sky_texture;
   SDL_Texture* rocket_texture;
+  SDL_Texture* asteroid_texture;
   
   const std::size_t screen_width;
   const std::size_t screen_height;
