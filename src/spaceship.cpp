@@ -3,16 +3,6 @@
 #include <chrono>
 #include <thread>
 
-Rocket::Rocket(float x, float y, float angle, float speed)
-    : SpaceObject(x, y, angle, speed)
-{
-
-}
-
-void Rocket::Simulate()
-{
-    
-}
 
 Spaceship::Spaceship() : SpaceObject(100, 100, 0, 0)
 {
@@ -36,10 +26,9 @@ void Spaceship::Accelerate(bool positive)
     speed = positive ? speed + acceleration : speed - acceleration;
 }
 
-Rocket Spaceship::Shoot()
+std::unique_ptr<Rocket> Spaceship::Shoot()
 {
-    return Rocket(x, y, angle, rockets_speed);
-    // gameHandle->rockets.emplace_back(Rocket(x, y, angle, rockets_speed + speed));
+    return std::make_unique<Rocket>(x, y, angle, rockets_speed+speed);
 }
 
 void Spaceship::Simulate()

@@ -22,6 +22,7 @@ src/controller.cpp
 src/game.cpp 
 src/main.cpp 
 src/renderer.cpp
+src/rocket.cpp
 src/spaceobject.cpp
 src/spaceship.cpp
 )

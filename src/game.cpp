@@ -2,6 +2,8 @@
 
 Game::Game(std::size_t screen_width, std::size_t screen_height)
     : spaceship(std::make_unique<Spaceship>(screen_width/2, screen_height/2, 0)),
+      screen_width(screen_width),
+      screen_height(screen_height),
       engine(dev()),
       random_w(0, static_cast<int>(screen_width)),
       random_h(0, static_cast<int>(screen_height))    
@@ -9,7 +11,7 @@ Game::Game(std::size_t screen_width, std::size_t screen_height)
     PlaceAsteroid();
 }
 
-void Game::Run(Controller const &controller, Renderer &renderer,
+void Game::Run(Controller &controller, Renderer &renderer,
         std::size_t target_frame_duration)
 {
     Uint32 title_timestamp = SDL_GetTicks();
@@ -23,7 +25,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
         frame_start = SDL_GetTicks();
 
         // Input, Update, Render - the main game loop.
-        controller.HandleInput(running, spaceship.get());
+        controller.HandleInput(running, spaceship.get(), rockets);
         Update();
         Render(renderer);
 
@@ -71,14 +73,30 @@ void Game::Update() {
 
     moving_objects.emplace_back(std::thread(&Spaceship::Simulate,spaceship.get()));
 
-    for (auto &asteroid : asteroids)
-    {
-        moving_objects.emplace_back(std::thread(&Asteroid::Move,asteroid.get()));
+    for (auto it = asteroids.begin(); it != asteroids.end(); it++)
+    {   
+        if (it->get()->OnScreen(screen_width, screen_height)){
+        moving_objects.emplace_back(std::thread(&Asteroid::Move,it->get()));
+        }
+        else
+        {
+            asteroids.erase(it);
+            it--;
+        }
+        
     }
 
-    for (auto &rocket : rockets)
+
+    for (auto it = rockets.begin(); it != rockets.end(); it++)
     {
-        moving_objects.emplace_back(std::thread(&Rocket::Move,rocket.get()));
+        if (it->get()->OnScreen(screen_width, screen_height)){
+        moving_objects.emplace_back(std::thread(&Rocket::Move,it->get()));
+        }
+        else
+        {
+            rockets.erase(it);
+            it--;
+        }
     }
 
     for (auto &thread : moving_objects)

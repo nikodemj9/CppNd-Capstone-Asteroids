@@ -11,13 +11,14 @@
 
 class Game {
     public:
-        Game(std::size_t grid_width, std::size_t grid_height);
-        void Run(Controller const &controller, Renderer &renderer,
+        Game(std::size_t screen_width, std::size_t screen_height);
+        void Run(Controller &controller, Renderer &renderer,
         std::size_t target_frame_duration);
         int GetScore() const;
         void Update();
         void Render(Renderer &renderer);
     private:
+        std::size_t screen_width, screen_height;
         void PlaceAsteroid();
         std::unique_ptr<Spaceship> spaceship;
         std::vector<std::unique_ptr<Asteroid>> asteroids;
