@@ -53,16 +53,23 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
 void Game::Update() {
 
-    spaceship->Move();
+    std::vector<std::thread> moving_objects;
+
+    moving_objects.emplace_back(std::thread(&Spaceship::Move,spaceship.get()));
 
     for (auto &asteroid : asteroids)
     {
-        asteroid->Move();
+        moving_objects.emplace_back(std::thread(&Asteroid::Move,asteroid.get()));
     }
 
     for (auto &rocket : rockets)
     {
-        rocket->Move();
+        moving_objects.emplace_back(std::thread(&Rocket::Move,rocket.get()));
+    }
+
+    for (auto &thread : moving_objects)
+    {
+        thread.join();
     }
 
     // Check hitboxes???

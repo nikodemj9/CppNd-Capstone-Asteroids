@@ -2,6 +2,7 @@
 #include <memory>
 #include <random>
 #include <vector>
+#include <thread>
 #include "SDL.h"
 #include "controller.h"
 #include "renderer.h"
