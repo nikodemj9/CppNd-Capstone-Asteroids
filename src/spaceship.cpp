@@ -49,20 +49,13 @@ void Spaceship::Simulate()
 
 void Spaceship::Float()
 {
-    // TODO change to queue, cant lock this forever
-    while (std::abs(speed) > 0.01)
+    if (std::abs(speed) > 0.02)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
-        if (speed > 0)
-        {
-            speed -= inertia;
-        }
-        else
-        {
-            speed += inertia;
-        }
-        
-
+        speed += speed > 0 ? -inertia : inertia;        
     }
+    else
+    {
+        speed = 0;
+    }
+    
 }

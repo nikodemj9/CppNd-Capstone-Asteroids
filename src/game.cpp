@@ -55,7 +55,7 @@ void Game::Update() {
 
     std::vector<std::thread> moving_objects;
 
-    moving_objects.emplace_back(std::thread(&Spaceship::Move,spaceship.get()));
+    moving_objects.emplace_back(std::thread(&Spaceship::Simulate,spaceship.get()));
 
     for (auto &asteroid : asteroids)
     {
