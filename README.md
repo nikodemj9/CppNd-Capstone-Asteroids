@@ -13,6 +13,13 @@ mkdir build && cd build
 cmake .. && make -j4
 ```
 
+## Controls
+```
+UP = Accelerate
+DOWN = Brake
+LEFT, RIGHT = Rotate
+SPACE = Shoot
+```
 
 
 ### Licensed models used for project

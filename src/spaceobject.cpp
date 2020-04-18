@@ -20,7 +20,7 @@ void SpaceObject::Move()
 
 bool SpaceObject::OnScreen(int const &screen_width, int const &screen_height) const
 {
-    return (hitbox.x > 0 && hitbox.x < screen_width && hitbox.y > 0 && hitbox.y < screen_height );
+    return (hitbox.x >= 0 && hitbox.x <= screen_width && hitbox.y >= 0 && hitbox.y <= screen_height );
 }
 
 void SpaceObject::NormalizePosition(int const &screen_width, int const &screen_height)

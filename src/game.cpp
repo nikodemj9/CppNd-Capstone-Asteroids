@@ -1,14 +1,24 @@
 #include "game.h"
+#include <chrono>
 
 Game::Game(std::size_t screen_width, std::size_t screen_height)
     : spaceship(std::make_unique<Spaceship>(screen_width/2, screen_height/2, 0)),
       screen_width(screen_width),
       screen_height(screen_height),
       engine(dev()),
+      random_screen(0,3),
       random_w(0, static_cast<int>(screen_width)),
-      random_h(0, static_cast<int>(screen_height))    
+      random_h(0, static_cast<int>(screen_height)),
+      random_speed(200, 500),
+      random_angle(3000, 15000)
 {
-    PlaceAsteroid();
+    asteroid_spawner = std::thread(&Game::PlaceAsteroid, this);
+}
+
+Game::~Game ()
+{
+    running = false;
+    asteroid_spawner.join();
 }
 
 void Game::Run(Controller &controller, Renderer &renderer,
@@ -19,7 +29,7 @@ void Game::Run(Controller &controller, Renderer &renderer,
     Uint32 frame_end;
     Uint32 frame_duration;
     int frame_count = 0;
-    bool running = true;
+    running = true;
 
     while (running) {
         frame_start = SDL_GetTicks();
@@ -69,8 +79,6 @@ void Game::Render(Renderer &renderer) {
 
 void Game::Update() {
 
-    PlaceAsteroid();
-
     std::vector<std::thread> moving_objects;
 
     moving_objects.emplace_back(std::thread(&Spaceship::Simulate,spaceship.get()));
@@ -113,16 +121,47 @@ void Game::Update() {
 int Game::GetScore() const { return score; }
 
 void Game::PlaceAsteroid()
-{
-    // calculate random x or y, set another coordinate to 0
-    // calculate speed
-    // create asteroid on heap, move to vector
+{   
+    auto interval = std::chrono::milliseconds(1000);
+    auto last_spawn = std::chrono::system_clock::now();
+    int x,y;
+    float angle, speed;
+    while (running)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - last_spawn);
 
-    // Test one
-    if (score < 2){
-    asteroids.emplace_back(std::make_unique<Asteroid>(10, 10, 45, 2));
-    score++;
+        if (elapsed > interval)
+        {
+            x = random_w(engine);
+            y = 0;
+            angle = static_cast<float>(random_angle(engine)) / 100.0;
+            speed = static_cast<float>(random_speed(engine)) / 100.0;
+
+            switch (random_screen(engine)){
+                case 0: // Up
+                    y = 0;
+                    break;
+                case 1: // Right
+                    x = screen_width;
+                    angle += 90;
+                    break;
+                case 2: // Down
+                    y = screen_height;
+                    angle += 180;
+                    break;
+                case 4: // Left
+                    x = 0;
+                    angle += 270;
+                    break;
+            }
+            
+            asteroids.emplace_back(std::make_unique<Asteroid>(x, y, angle, speed));
+            last_spawn = std::chrono::system_clock::now();
+        }
     }
 
-    
+
+
+
 }
