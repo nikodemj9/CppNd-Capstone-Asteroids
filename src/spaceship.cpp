@@ -6,12 +6,14 @@
 
 Spaceship::Spaceship() : SpaceObject(100, 100, 0, 0)
 {
-
+    hitbox.w = 50;
+    hitbox.h = 50;
 }
 
 Spaceship::Spaceship(float x, float y, float angle) : SpaceObject(x, y, angle, 0)
 {
-
+    hitbox.w = 50;
+    hitbox.h = 50;
 }
 
 void Spaceship::Rotate(bool positive)
@@ -28,7 +30,7 @@ void Spaceship::Accelerate(bool positive)
 
 std::unique_ptr<Rocket> Spaceship::Shoot()
 {
-    return std::make_unique<Rocket>(x, y, angle, rockets_speed+speed);
+    return std::make_unique<Rocket>(hitbox.x+(hitbox.w/2), hitbox.y+(hitbox.h/2), angle, rockets_speed+speed);
 }
 
 void Spaceship::Simulate()

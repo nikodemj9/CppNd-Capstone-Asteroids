@@ -59,30 +59,19 @@ void Renderer::ClearScreen() {
 }
 
 void Renderer::Render(Spaceship *spaceship) {
-  SDL_Rect block;
-  block.w = 50;
-  block.h = 50;
+
   
   // Render Ship
   spaceship->NormalizePosition(screen_width, screen_height);
-  block.x = spaceship->X();
-  block.y = spaceship->Y();
-  SDL_RenderCopyEx(sdl_renderer, ship_texture, NULL, &block, spaceship->Angle(), NULL, SDL_FLIP_NONE);
-
+  SDL_RenderCopyEx(sdl_renderer, ship_texture, NULL, spaceship->Box(), spaceship->Angle(), NULL, SDL_FLIP_NONE);
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
 }
 
 void Renderer::Render(Rocket *rocket) {
-  SDL_Rect block;
-  block.w = 4;
-  block.h = 10;
-  
-  // Render Rocket
-  block.x = rocket->X() + 23; // Magic numbers to get rocket rendered somewhere near the ship's center
-  block.y = rocket->Y() + 23;
-  SDL_RenderCopyEx(sdl_renderer, rocket_texture, NULL, &block, rocket->Angle()-90, NULL, SDL_FLIP_NONE);
 
+  // Render Rocket
+  SDL_RenderCopyEx(sdl_renderer, rocket_texture, NULL, rocket->Box(), rocket->Angle(), NULL, SDL_FLIP_NONE);
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
 }
