@@ -13,6 +13,7 @@ class Renderer {
   void Render(Spaceship *spaceship);
   void Render(Asteroid *asteroid);
   void Render(Rocket *rocket);
+  void Render();
   void UpdateWindowTitle(int score, int fps);
 
  private:

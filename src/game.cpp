@@ -64,7 +64,7 @@ void Game::Render(Renderer &renderer) {
     {
         renderer.Render(rocket.get());
     }
-
+    renderer.Render();
 }
 
 void Game::Update() {

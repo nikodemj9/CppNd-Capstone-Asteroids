@@ -64,21 +64,23 @@ void Renderer::Render(Spaceship *spaceship) {
   // Render Ship
   spaceship->NormalizePosition(screen_width, screen_height);
   SDL_RenderCopyEx(sdl_renderer, ship_texture, NULL, spaceship->Box(), spaceship->Angle(), NULL, SDL_FLIP_NONE);
-  // Update Screen
-  SDL_RenderPresent(sdl_renderer);
 }
 
 void Renderer::Render(Rocket *rocket) {
 
   // Render Rocket
   SDL_RenderCopyEx(sdl_renderer, rocket_texture, NULL, rocket->Box(), rocket->Angle(), NULL, SDL_FLIP_NONE);
-  // Update Screen
-  SDL_RenderPresent(sdl_renderer);
 }
 
 void Renderer::Render(Asteroid *asteroid)
 {
 
+}
+
+void Renderer::Render()
+{
+  // Update Screen
+  SDL_RenderPresent(sdl_renderer);
 }
 
 void Renderer::UpdateWindowTitle(int score, int fps) {
