@@ -1,10 +1,10 @@
 #include "game.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
-    : spaceship(std::make_unique<Spaceship>(grid_width/2, grid_height/2, 0)),
+Game::Game(std::size_t screen_width, std::size_t screen_height)
+    : spaceship(std::make_unique<Spaceship>(screen_width/2, screen_height/2, 0)),
       engine(dev()),
-      random_w(0, static_cast<int>(grid_width)),
-      random_h(0, static_cast<int>(grid_height))    
+      random_w(0, static_cast<int>(screen_width)),
+      random_h(0, static_cast<int>(screen_height))    
 {
     PlaceAsteroid();
 }

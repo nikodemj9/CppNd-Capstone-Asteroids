@@ -7,8 +7,7 @@
 
 class Renderer {
  public:
-  Renderer(const std::size_t screen_width, const std::size_t screen_height,
-           const std::size_t grid_width, const std::size_t grid_height);
+  Renderer(const std::size_t screen_width, const std::size_t screen_height);
   ~Renderer();
 
   void Render(Spaceship *spaceship);
@@ -19,9 +18,8 @@ class Renderer {
   SDL_Window *sdl_window;
   SDL_Renderer *sdl_renderer;
   SDL_Texture* ship_texture;
+  SDL_Texture* sky_texture;
   
   const std::size_t screen_width;
   const std::size_t screen_height;
-  const std::size_t grid_width;
-  const std::size_t grid_height;
 };

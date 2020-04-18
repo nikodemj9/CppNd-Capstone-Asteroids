@@ -30,5 +30,5 @@ target_link_libraries(Asteroids
     ${SDL2_IMAGE_LIBRARIES}
 )
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/media/spaceship.png
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/media/
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

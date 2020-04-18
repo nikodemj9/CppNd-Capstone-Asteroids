@@ -5,12 +5,9 @@
 #include <SDL2/SDL_image.h>
 
 Renderer::Renderer(const std::size_t screen_width,
-                   const std::size_t screen_height,
-                   const std::size_t grid_width, const std::size_t grid_height)
+                   const std::size_t screen_height)
     : screen_width(screen_width),
-      screen_height(screen_height),
-      grid_width(grid_width),
-      grid_height(grid_height) {
+      screen_height(screen_height){
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cerr << "SDL could not initialize.\n";
@@ -59,6 +56,31 @@ Renderer::Renderer(const std::size_t screen_width,
 		SDL_FreeSurface( loadedSurface );
 	}
 
+  // Load sky texture
+  filepath = "nightsky.png";
+
+	//Load image at specified path
+	loadedSurface = IMG_Load( filepath.c_str() );
+	if( loadedSurface == NULL )
+	{
+		printf( "Unable to load image %s! SDL_image Error: %s\n", filepath.c_str(), IMG_GetError() );
+	}
+	else
+	{
+		//Color key image
+		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
+
+		//Create texture from surface pixels
+        sky_texture = SDL_CreateTextureFromSurface( sdl_renderer, loadedSurface );
+		if( sky_texture == NULL )
+		{
+			printf( "Unable to create texture from %s! SDL Error: %s\n", filepath.c_str(), SDL_GetError() );
+		}
+
+		//Get rid of old loaded surface
+		SDL_FreeSurface( loadedSurface );
+	}
+
 
 }
 
@@ -69,18 +91,21 @@ Renderer::~Renderer() {
 
 void Renderer::Render(Spaceship *spaceship) {
   SDL_Rect block;
-  block.w = screen_width / grid_width * 20;
-  block.h = screen_height / grid_height * 20;
+  block.w = screen_width / 20;
+  block.h = screen_height / 20;
+  
 
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(sdl_renderer);
 
+  // Render background
+  SDL_RenderCopy(sdl_renderer, sky_texture, NULL, NULL);
+
   // Render Ship
   // TODO get texture, rotate
-  SDL_SetRenderDrawColor(sdl_renderer, 38, 128, 197, 1);
-  block.x = spaceship->X() * block.w;
-  block.y = spaceship->Y() * block.h;
+  block.x = spaceship->X();
+  block.y = spaceship->Y();
   while (block.x > screen_width) { block.x -= screen_width;};
   while (block.x < 0) { block.x += screen_width;};
   while (block.y > screen_width) { block.y -= screen_height;};
