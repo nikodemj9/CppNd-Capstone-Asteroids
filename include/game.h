@@ -3,7 +3,7 @@
 #include <random>
 #include <vector>
 #include <thread>
-#include <thread>
+#include <algorithm>
 #include "SDL.h"
 #include "controller.h"
 #include "renderer.h"
@@ -49,15 +49,12 @@ class Game {
 template <typename T>
 void Game::Simulate(typename  std::vector<std::unique_ptr<T>> &objects, std::vector<std::thread> &threads)
 {
-      for (auto it = objects.begin(); it != objects.end(); it++)
+    // Erase elements that are out of the screen
+    auto end = std::remove_if(objects.begin(), objects.end(), [this](std::unique_ptr<T> &i){ return !(i->OnScreen(screen_width, screen_height));} );
+    objects.erase(end, objects.end());
+    // Simulate remaining objects 
+    for (auto it = objects.begin(); it != objects.end(); it++)
     {   
-        if (it->get()->OnScreen(screen_width, screen_height)){
-             threads.emplace_back(std::thread(&T::Simulate,it->get()));
-        }
-        else
-        {
-            objects.erase(it);
-            it--;
-        }   
+        threads.emplace_back(std::thread(&T::Simulate,it->get()));
     }  
 }

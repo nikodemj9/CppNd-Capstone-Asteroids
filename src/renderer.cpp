@@ -44,6 +44,15 @@ Renderer::~Renderer() {
   SDL_DestroyWindow(sdl_window);
   SDL_DestroyRenderer(sdl_renderer);
   SDL_DestroyTexture(sky_texture);
+  SDL_DestroyTexture(Spaceship::texture);
+  SDL_DestroyTexture(Rocket::texture);
+  SDL_DestroyTexture(Asteroid::texture);
+  sdl_window = NULL;
+  sdl_renderer = NULL;
+  sky_texture = NULL;
+  Spaceship::texture = NULL;
+  Rocket::texture = NULL;
+  Asteroid::texture = NULL;
   SDL_Quit();
 }
 
