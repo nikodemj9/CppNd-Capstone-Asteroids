@@ -16,8 +16,12 @@ public:
 
 protected:
     SpaceObject(float x, float y, float angle, float speed);
+    float x,y;
     float angle;
     float speed;
     SDL_Rect hitbox;
     std::mutex pos_mtx, ang_mtx, speed_mtx;
+
+private:
+    void UpdateHitbox();
 };

@@ -18,7 +18,7 @@ class Spaceship : public SpaceObject {
 
     private:
         const float acceleration{0.1};
-        const float angular_acc{5};
+        const float angular_acc{10};
         const float inertia{0.01};
         const float rockets_speed{10};
 };
