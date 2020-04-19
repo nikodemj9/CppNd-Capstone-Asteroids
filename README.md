@@ -6,9 +6,13 @@ Based on Udacity's CppND-Capstone-Snake-Game project
 https://github.com/udacity/CppND-Capstone-Snake-Game
 
 
+<img src="asteroids.gif"/>
+
 
 ## Build instruction
 ```
+sudo apt install libsdl2-image-* libsdl2-mixer*
+git clone --recurse-submodules https://github.com/nikodemj9/CppNd-Capstone-Asteroids.git
 mkdir build && cd build
 cmake .. && make -j4
 ```
