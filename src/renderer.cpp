@@ -33,10 +33,10 @@ Renderer::Renderer(const std::size_t screen_width,
   
 
   IMG_Init(IMG_INIT_PNG);
-  Spaceship::texture = IMG_LoadTexture(sdl_renderer, "spaceship.png");
-  sky_texture = IMG_LoadTexture(sdl_renderer, "nightsky.png");
-  Rocket::texture = IMG_LoadTexture(sdl_renderer, "rocket.png");
-  Asteroid::texture = IMG_LoadTexture(sdl_renderer, "asteroid.png");
+  Spaceship::texture = IMG_LoadTexture(sdl_renderer, "media/spaceship.png");
+  sky_texture = IMG_LoadTexture(sdl_renderer, "media/nightsky.png");
+  Rocket::texture = IMG_LoadTexture(sdl_renderer, "media/rocket.png");
+  Asteroid::texture = IMG_LoadTexture(sdl_renderer, "media/asteroid.png");
  
 }
 

@@ -9,6 +9,7 @@
 #include "renderer.h"
 #include "spaceship.h"
 #include "asteroid.h"
+#include "sound.h"
 
 class Game {
     public:
@@ -18,11 +19,14 @@ class Game {
         std::size_t target_frame_duration);
         int GetScore() const;
         void Update();
+        void Reset();
         void Render(Renderer &renderer);
         template <typename T>
         void Simulate(typename std::vector<std::unique_ptr<T>> &objects, std::vector<std::thread> &threads);
     private:
+        Sound sound;
         bool running;
+        std::size_t rockets_amount{0};
         std::size_t screen_width, screen_height;
         void PlaceAsteroid();
         std::unique_ptr<Spaceship> spaceship;

@@ -31,6 +31,7 @@ void Game::Run(Controller &controller, Renderer &renderer,
     int frame_count = 0;
     running = true;
 
+
     while (running) {
         frame_start = SDL_GetTicks();
 
@@ -79,8 +80,13 @@ void Game::Render(Renderer &renderer) {
 
 void Game::Update() {
 
+    // Count rockets
+    if (rockets_amount != rockets.size())
+    {
+        sound.Play(sound.shoot);
+        rockets_amount = rockets.size();
+    }
     // Move all objects
-
     std::vector<std::thread> moving_objects;
     moving_objects.emplace_back(std::thread(&Spaceship::Simulate,spaceship.get()));
     Simulate(asteroids, moving_objects);
@@ -101,19 +107,30 @@ void Game::Update() {
                 asteroids.erase(it);
                 it--;
                 score++;
+                sound.Play(sound.explosion);
             }
         }
     }
-
+    // Check hitboxes for ship, reset game if hit
+    bool reset;
     for (auto &asteroid : asteroids)
     {
         if (SDL_HasIntersection(asteroid->Box(), spaceship->Box()))
         {
-            spaceship.reset(new Spaceship(screen_width/2, screen_height/2, 0));
-            score = 0;
+            reset = true;
         }
     }
+    if (reset) Reset();
 
+}
+
+void Game::Reset()
+{
+        spaceship.reset(new Spaceship(screen_width/2, screen_height/2, 0));
+        score = 0;
+        sound.Play(sound.death);
+        asteroids.clear();
+        rockets.clear();
 }
 
 int Game::GetScore() const { return score; }
