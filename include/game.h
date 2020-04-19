@@ -19,6 +19,8 @@ class Game {
         int GetScore() const;
         void Update();
         void Render(Renderer &renderer);
+        template <typename T>
+        void Simulate(typename std::vector<std::unique_ptr<T>> &objects, std::vector<std::thread> &threads);
     private:
         bool running;
         std::size_t screen_width, screen_height;
@@ -39,3 +41,19 @@ class Game {
 
 };
 
+// Simulates space objects, removes if they are out of the screen
+template <typename T>
+void Game::Simulate(typename  std::vector<std::unique_ptr<T>> &objects, std::vector<std::thread> &threads)
+{
+      for (auto it = objects.begin(); it != objects.end(); it++)
+    {   
+        if (it->get()->OnScreen(screen_width, screen_height)){
+             threads.emplace_back(std::thread(&T::Simulate,it->get()));
+        }
+        else
+        {
+            objects.erase(it);
+            it--;
+        }   
+    }  
+}

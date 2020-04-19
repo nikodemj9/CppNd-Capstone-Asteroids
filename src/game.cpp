@@ -79,44 +79,40 @@ void Game::Render(Renderer &renderer) {
 
 void Game::Update() {
 
+    // Move all objects
+
     std::vector<std::thread> moving_objects;
-
     moving_objects.emplace_back(std::thread(&Spaceship::Simulate,spaceship.get()));
-
-    for (auto it = asteroids.begin(); it != asteroids.end(); it++)
-    {   
-        if (it->get()->OnScreen(screen_width, screen_height)){
-        moving_objects.emplace_back(std::thread(&Asteroid::Move,it->get()));
-        }
-        else
-        {
-            asteroids.erase(it);
-            it--;
-        }
-        
-    }
-
-
-    for (auto it = rockets.begin(); it != rockets.end(); it++)
-    {
-        if (it->get()->OnScreen(screen_width, screen_height)){
-        moving_objects.emplace_back(std::thread(&Rocket::Move,it->get()));
-        }
-        else
-        {
-            rockets.erase(it);
-            it--;
-        }
-    }
-
+    Simulate(asteroids, moving_objects);
+    Simulate(rockets, moving_objects);
     for (auto &thread : moving_objects)
     {
         thread.join();
     }
-
     spaceship->NormalizePosition(screen_width, screen_height);
 
-    // Check hitboxes???
+    // Check hitboxes
+    for (auto &rocket : rockets)
+    {
+        for (auto it = asteroids.begin(); it != asteroids.end(); it++)
+        {
+            if (SDL_HasIntersection(rocket->Box(), it->get()->Box()))
+            {
+                asteroids.erase(it);
+                it--;
+                score++;
+            }
+        }
+    }
+
+    for (auto &asteroid : asteroids)
+    {
+        if (SDL_HasIntersection(asteroid->Box(), spaceship->Box()))
+        {
+            spaceship.reset(new Spaceship(screen_width/2, screen_height/2, 0));
+            score = 0;
+        }
+    }
 
 }
 
