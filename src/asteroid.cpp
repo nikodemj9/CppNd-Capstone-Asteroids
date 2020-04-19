@@ -1,5 +1,7 @@
 #include "asteroid.h"
 
+SDL_Texture* Asteroid::texture = NULL;
+
 Asteroid::Asteroid(float x, float y, float angle, float speed) : SpaceObject(x, y, angle, speed)
 {
     hitbox.w = 50;

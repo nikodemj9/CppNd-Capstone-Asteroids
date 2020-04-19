@@ -7,4 +7,6 @@ public:
     Asteroid(float x, float y, float angle, float speed);
     void Simulate() {Move();};
     void SetSize(int size);
+    static SDL_Texture* texture;
+
 };

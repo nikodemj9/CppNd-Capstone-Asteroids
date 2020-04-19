@@ -20,5 +20,4 @@ protected:
     float speed;
     SDL_Rect hitbox;
     std::mutex pos_mtx, ang_mtx, speed_mtx;
-
 };

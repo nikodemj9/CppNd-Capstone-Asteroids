@@ -1,4 +1,5 @@
 #pragma once
+
 #include "spaceobject.h"
 #include "rocket.h"
 #include <memory>
@@ -13,6 +14,7 @@ class Spaceship : public SpaceObject {
         void Accelerate(bool acceleration);
         std::unique_ptr<Rocket> Shoot();
         void Float();
+        static SDL_Texture* texture;
 
     private:
         const float acceleration{0.1};
@@ -20,3 +22,4 @@ class Spaceship : public SpaceObject {
         const float inertia{0.01};
         const float rockets_speed{10};
 };
+

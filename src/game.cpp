@@ -65,7 +65,7 @@ void Game::Run(Controller &controller, Renderer &renderer,
 
 void Game::Render(Renderer &renderer) {
     renderer.ClearScreen();
-    renderer.Render(spaceship.get());
+    renderer.Render<Spaceship>(spaceship.get());
     for (auto &asteroid : asteroids)
     {
         renderer.Render(asteroid.get());
@@ -113,6 +113,8 @@ void Game::Update() {
     {
         thread.join();
     }
+
+    spaceship->NormalizePosition(screen_width, screen_height);
 
     // Check hitboxes???
 

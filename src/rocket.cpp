@@ -1,5 +1,7 @@
 #include "rocket.h"
 
+SDL_Texture* Rocket::texture = NULL;
+
 Rocket::Rocket(float x, float y, float angle, float speed)
     : SpaceObject(x, y, angle, speed)
 {
@@ -9,5 +11,5 @@ Rocket::Rocket(float x, float y, float angle, float speed)
 
 void Rocket::Simulate()
 {
-    
+    Move();
 }

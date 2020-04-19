@@ -3,6 +3,7 @@
 #include <chrono>
 #include <thread>
 
+SDL_Texture* Spaceship::texture = NULL;
 
 Spaceship::Spaceship() : SpaceObject(100, 100, 0, 0)
 {
