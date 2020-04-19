@@ -17,9 +17,9 @@ class Spaceship : public SpaceObject {
         static SDL_Texture* texture;
 
     private:
-        const float acceleration{0.1};
-        const float angular_acc{10};
-        const float inertia{0.01};
-        const float rockets_speed{10};
+        const float acceleration{360};
+        const float angular_acc{600};
+        const float inertia{0.6};
+        const float rockets_speed{600};
 };
 

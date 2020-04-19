@@ -1,5 +1,6 @@
 #pragma once
 #include <mutex>
+#include <chrono>
 #include "SDL.h"
 
 class SpaceObject {
@@ -21,7 +22,9 @@ protected:
     float speed;
     SDL_Rect hitbox;
     std::mutex pos_mtx, ang_mtx, speed_mtx;
-
+    std::chrono::time_point<std::chrono::system_clock> last_update;
+    std::chrono::duration<double> duration;
+    
 private:
     void UpdateHitbox();
 };

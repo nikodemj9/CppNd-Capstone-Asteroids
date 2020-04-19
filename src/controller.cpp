@@ -24,15 +24,13 @@ void Controller::Shoot(Spaceship *spaceship, std::vector<std::unique_ptr<Rocket>
 
 void Controller::HandleInput(bool &running, Spaceship *spaceship, std::vector<std::unique_ptr<Rocket>> &rockets) {
 
-  while (SDL_PollEvent(event.get()))
-  {
-  if (event->type == SDL_QUIT) 
-  {
-      running = false;
-  } 
-  else if(event->type == SDL_KEYDOWN || event->type == SDL_KEYUP)
-  {
-    // Move centerpoint of rotation for one of the trees:
+      while (SDL_PollEvent(event.get()))
+      {
+      if (event->type == SDL_QUIT) 
+      {
+            running = false;
+      } 
+
     if (keyboard_state_array[SDL_SCANCODE_UP])
     {
           ChangeSpeed(spaceship, true);
@@ -53,6 +51,6 @@ void Controller::HandleInput(bool &running, Spaceship *spaceship, std::vector<st
     {
           Shoot(spaceship, rockets);
     }
-  }
+  
   }
 }

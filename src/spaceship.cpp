@@ -20,13 +20,13 @@ Spaceship::Spaceship(float x, float y, float angle) : SpaceObject(x, y, angle, 0
 void Spaceship::Rotate(bool positive)
 {
     std::lock_guard<std::mutex> lock(ang_mtx);
-    angle = positive ? angle + angular_acc : angle - angular_acc;
+    angle = positive ? angle + angular_acc * duration.count() : angle - angular_acc * duration.count();
 }
 
 void Spaceship::Accelerate(bool positive)
 {
     std::lock_guard<std::mutex> lock(speed_mtx);
-    speed = positive ? speed + acceleration : speed - acceleration;
+    speed = positive ? speed + acceleration * duration.count() : speed - acceleration * duration.count();
 }
 
 std::unique_ptr<Rocket> Spaceship::Shoot()

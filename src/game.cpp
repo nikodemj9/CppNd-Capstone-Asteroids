@@ -9,7 +9,7 @@ Game::Game(std::size_t screen_width, std::size_t screen_height)
       random_screen(0,3),
       random_w(0, static_cast<int>(screen_width)),
       random_h(0, static_cast<int>(screen_height)),
-      random_speed(200, 500),
+      random_speed(12000, 30000),
       random_angle(3000, 15000)
 {
     asteroid_spawner = std::thread(&Game::PlaceAsteroid, this);
@@ -104,10 +104,10 @@ void Game::Update() {
         {
             if (SDL_HasIntersection(rocket->Box(), it->get()->Box()))
             {
+                sound.Play(sound.explosion);
                 asteroids.erase(it);
                 it--;
                 score++;
-                sound.Play(sound.explosion);
             }
         }
     }
@@ -126,9 +126,9 @@ void Game::Update() {
 
 void Game::Reset()
 {
+        sound.Play(sound.death);
         spaceship.reset(new Spaceship(screen_width/2, screen_height/2, 0));
         score = 0;
-        sound.Play(sound.death);
         asteroids.clear();
         rockets.clear();
 }

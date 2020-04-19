@@ -2,12 +2,12 @@
 #include <cmath>
 
 #define deg2rad 0.0174532925 
-const double pi = 3.14159265359;
 
 SpaceObject::SpaceObject(float x, float y, float angle, float speed) :
     angle(angle), speed(speed), x(x), y(y) {
         hitbox.x = x;
         hitbox.y = y;
+        last_update = std::chrono::system_clock::now();
     };
 
 void SpaceObject::Move()
@@ -15,9 +15,11 @@ void SpaceObject::Move()
     std::lock_guard<std::mutex> locks(speed_mtx);
     std::lock_guard<std::mutex> locka(ang_mtx);
     std::lock_guard<std::mutex> lockp(pos_mtx);
-    x += std::cos(angle * deg2rad) * speed;
-    y += std::sin(angle * deg2rad) * speed;
+    duration = std::chrono::system_clock::now() - last_update;
+    x += std::cos(angle * deg2rad) * speed * duration.count();
+    y += std::sin(angle * deg2rad) * speed * duration.count();
     UpdateHitbox();
+    last_update = std::chrono::system_clock::now();
 }
 
 bool SpaceObject::OnScreen(int const &screen_width, int const &screen_height) const
