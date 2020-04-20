@@ -66,16 +66,12 @@ void Game::Run(Controller &controller, Renderer &renderer,
 
 void Game::Render(Renderer &renderer) {
     renderer.ClearScreen();
-    renderer.Render<Spaceship>(spaceship.get());
-    for (auto &asteroid : asteroids)
-    {
-        renderer.Render(asteroid.get());
-    }
-    for (auto &rocket : rockets)
-    {
-        renderer.Render(rocket.get());
-    }
-    renderer.Render();
+    renderer.Render(spaceship);
+    std::unique_lock<std::mutex> lock(asteroids_lock);
+    renderer.Render(asteroids);
+    lock.unlock();
+    renderer.Render(rockets);
+    renderer.Render(); // Actual screen rendering
 }
 
 void Game::Update() {
@@ -89,7 +85,9 @@ void Game::Update() {
     // Move all objects
     std::vector<std::thread> moving_objects;
     moving_objects.emplace_back(std::thread(&Spaceship::Simulate,spaceship.get()));
+    std::unique_lock<std::mutex> lock(asteroids_lock);
     Simulate(asteroids, moving_objects);
+    lock.unlock();
     Simulate(rockets, moving_objects);
     for (auto &thread : moving_objects)
     {
@@ -98,17 +96,23 @@ void Game::Update() {
     spaceship->NormalizePosition(screen_width, screen_height);
 
     // Check hitboxes
+    lock.lock();
     for (auto &rocket : rockets)
     {
-        for (auto it = asteroids.begin(); it != asteroids.end(); it++)
+        auto it = asteroids.begin();
+        while (it != asteroids.end())
         {
             if (SDL_HasIntersection(rocket->Box(), it->get()->Box()))
             {
                 sound.Play(sound.explosion);
                 asteroids.erase(it);
-                it--;
                 score++;
             }
+            else
+            {
+                it++;
+            }
+            
         }
     }
     // Check hitboxes for ship, reset game if hit
@@ -120,7 +124,10 @@ void Game::Update() {
             reset = true;
         }
     }
-    if (reset) Reset();
+    if (reset) 
+    {
+        Reset();
+    }
 
 }
 
@@ -170,7 +177,7 @@ void Game::PlaceAsteroid()
                     angle += 270;
                     break;
             }
-            
+            std::unique_lock<std::mutex> lock(asteroids_lock);
             asteroids.emplace_back(std::make_unique<Asteroid>(x, y, angle, speed));
             last_spawn = std::chrono::system_clock::now();
         }

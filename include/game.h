@@ -17,22 +17,22 @@ class Game {
         ~Game();
         void Run(Controller &controller, Renderer &renderer,
         std::size_t target_frame_duration);
-        int GetScore() const;
         void Update();
         void Reset();
         void Render(Renderer &renderer);
         template <typename T>
         void Simulate(typename std::vector<std::unique_ptr<T>> &objects, std::vector<std::thread> &threads);
+        int GetScore()  const;
     private:
+        void PlaceAsteroid();
         Sound sound;
         bool running;
+        int score{0};
         std::size_t rockets_amount{0};
         std::size_t screen_width, screen_height;
-        void PlaceAsteroid();
         std::unique_ptr<Spaceship> spaceship;
         std::vector<std::unique_ptr<Asteroid>> asteroids;
         std::vector<std::unique_ptr<Rocket>> rockets;
-        int score{0};
         std::random_device dev;
         std::mt19937 engine;
         std::uniform_int_distribution<int> random_screen;
@@ -41,6 +41,7 @@ class Game {
         std::uniform_int_distribution<int> random_speed;
         std::uniform_int_distribution<int> random_angle;
         std::thread asteroid_spawner;
+        std::mutex asteroids_lock;
         
 
 };

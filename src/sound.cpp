@@ -34,6 +34,11 @@ void Sound::LoadMedia()
     {
         std::cout << "Failed to load audio files\n" << (background == NULL) << (shoot == NULL) << (death == NULL) << (explosion == NULL) << "\n";
     }
+
+    Mix_VolumeMusic(8);
+    Mix_VolumeChunk(shoot, 10);
+    Mix_VolumeChunk(death, 30);
+    Mix_VolumeChunk(explosion, 10);
 }
 
 void Sound::PlayBackground()

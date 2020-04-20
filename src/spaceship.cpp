@@ -2,6 +2,9 @@
 #include <cstdlib>
 #include <chrono>
 #include <thread>
+#include <algorithm>
+
+#include <iostream>
 
 SDL_Texture* Spaceship::texture = NULL;
 
@@ -27,6 +30,9 @@ void Spaceship::Accelerate(bool positive)
 {
     std::lock_guard<std::mutex> lock(speed_mtx);
     speed = positive ? speed + acceleration * duration.count() : speed - acceleration * duration.count();
+    speed = std::clamp(speed, -max_speed, max_speed);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
 }
 
 std::unique_ptr<Rocket> Spaceship::Shoot()

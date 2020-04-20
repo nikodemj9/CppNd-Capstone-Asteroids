@@ -9,12 +9,14 @@ https://github.com/udacity/CppND-Capstone-Snake-Game
 <img src="asteroids.gif"/>
 
 
-## Build instruction
+## Build & run manual
 ```
 sudo apt install libsdl2-image-* libsdl2-mixer*
 git clone --recurse-submodules https://github.com/nikodemj9/CppNd-Capstone-Asteroids.git
+cd CppNd-Capstone-Asteroids
 mkdir build && cd build
 cmake .. && make -j4
+./Asteroids
 ```
 
 ## Controls
@@ -24,6 +26,9 @@ DOWN = Brake
 LEFT, RIGHT = Rotate
 SPACE = Shoot
 ```
+
+## Description
+
 
 
 ### Licensed resources used for project

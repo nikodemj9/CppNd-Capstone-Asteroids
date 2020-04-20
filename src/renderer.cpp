@@ -66,12 +66,18 @@ void Renderer::ClearScreen() {
   SDL_RenderCopy(sdl_renderer, sky_texture, NULL, NULL);
 }
 
+void Renderer::Render(std::unique_ptr<Spaceship> &spaceship)
+{
+  SDL_RenderCopyEx(sdl_renderer, spaceship.get()->texture, NULL, spaceship.get()->Box(), spaceship.get()->Angle(), NULL, SDL_FLIP_NONE);
+}
+
 
 void Renderer::Render()
 {
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
 }
+
 
 void Renderer::UpdateWindowTitle(int score, int fps) {
   std::string title{"Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};

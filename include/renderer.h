@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "SDL.h"
 #include "spaceship.h"
 #include "asteroid.h"
@@ -11,7 +12,8 @@ class Renderer {
   ~Renderer();
   void ClearScreen();
   template<typename T>
-  void Render(T *t);
+  void Render(typename std::vector<std::unique_ptr<T>> &t);
+  void Render(std::unique_ptr<Spaceship> &spaceship);
   void Render();
   void UpdateWindowTitle(int score, int fps);
 
@@ -25,6 +27,12 @@ class Renderer {
 };
 
 template <typename T>
-void Renderer::Render(T *t) {
-  SDL_RenderCopyEx(sdl_renderer, t->texture, NULL, t->Box(), t->Angle(), NULL, SDL_FLIP_NONE);
+void Renderer::Render(typename std::vector<std::unique_ptr<T>> &t) {
+
+
+    for (auto &object : t)
+    {
+        SDL_RenderCopyEx(sdl_renderer, object.get()->texture, NULL, object.get()->Box(), object.get()->Angle(), NULL, SDL_FLIP_NONE);
+    }
+
 }
