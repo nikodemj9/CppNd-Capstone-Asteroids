@@ -27,10 +27,6 @@ LEFT, RIGHT = Rotate
 SPACE = Shoot
 ```
 
-## Description
-
-
-
 ### Licensed resources used for project
 * Spaceship model (CC BY 3.0) https://opengameart.org/content/night-raider
 * Asteroid model (CC BY 4.0) https://opengameart.org/content/brown-asteroid
