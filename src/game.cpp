@@ -116,7 +116,7 @@ void Game::Update() {
         }
     }
     // Check hitboxes for ship, reset game if hit
-    bool reset;
+    bool reset = false;
     for (auto &asteroid : asteroids)
     {
         if (SDL_HasIntersection(asteroid->Box(), spaceship->Box()))
