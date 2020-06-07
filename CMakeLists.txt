@@ -27,6 +27,7 @@ src/rocket.cpp
 src/sound.cpp
 src/spaceobject.cpp
 src/spaceship.cpp
+src/command.cpp
 )
 
 target_link_libraries(Asteroids 

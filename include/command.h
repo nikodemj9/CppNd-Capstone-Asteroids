@@ -36,5 +36,5 @@ public:
 class ShootCommand : public Command
 {
 public:
-    virtual void execute(Spaceship *spaceship, std::vector<std::unique_ptr<Rocket>> &rockets) override;
+    virtual void execute(Spaceship *spaceship) override;
 };

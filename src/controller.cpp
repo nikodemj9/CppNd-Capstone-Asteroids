@@ -1,25 +1,15 @@
 #include "controller.h"
 #include <iostream>
 
-Controller::Controller ()
+Controller::Controller () :
+      buttonArrowLeft(std::make_unique<RotateLeftCommand>()),
+      buttonArrowRight(std::make_unique<RotateRightCommand>()),
+      buttonArrowUp(std::make_unique<AccelerateCommand>()),
+      buttonArrowDown(std::make_unique<DecelarateCommand>()),
+      buttonSpace(std::make_unique<ShootCommand>())
 {
   keyboard_state_array = SDL_GetKeyboardState(NULL);
   event = std::make_unique<SDL_Event>();
-}
-
-void Controller::ChangeRotation(Spaceship *spaceship, bool positive) const
-{
-    spaceship->Rotate(positive);
-}
-
-void Controller::ChangeSpeed(Spaceship *spaceship, bool positive) const
-{
-    spaceship->Accelerate(positive);
-}
-
-void Controller::Shoot(Spaceship *spaceship)
-{
-    spaceship->Shoot();
 }
 
 void Controller::HandleInput(bool &running, Spaceship *spaceship) {
@@ -34,23 +24,23 @@ void Controller::HandleInput(bool &running, Spaceship *spaceship) {
    
       if (keyboard_state_array[SDL_SCANCODE_UP])
       {
-            ChangeSpeed(spaceship, true);
+            buttonArrowUp->execute(spaceship);
       }
       if (keyboard_state_array[SDL_SCANCODE_DOWN])
       {
-            ChangeSpeed(spaceship, false);
+            buttonArrowDown->execute(spaceship);
       }
       if (keyboard_state_array[SDL_SCANCODE_LEFT])
       {
-            ChangeRotation(spaceship, false);
+            buttonArrowLeft->execute(spaceship);
       }
       if (keyboard_state_array[SDL_SCANCODE_RIGHT])
       {
-            ChangeRotation(spaceship, true);
+            buttonArrowRight->execute(spaceship);
       }
       if (keyboard_state_array[SDL_SCANCODE_SPACE])
       {
-            Shoot(spaceship);
+            buttonSpace->execute(spaceship);
       }
                  
    
