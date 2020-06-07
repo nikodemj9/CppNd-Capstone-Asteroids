@@ -36,7 +36,7 @@ void Game::Run(Controller &controller, Renderer &renderer,
         frame_start = SDL_GetTicks();
 
         // Input, Update, Render - the main game loop.
-        controller.HandleInput(running, spaceship.get(), rockets);
+        controller.HandleInput(running, spaceship.get());
         Update();
         Render(renderer);
 
@@ -70,17 +70,17 @@ void Game::Render(Renderer &renderer) {
     std::unique_lock<std::mutex> lock(asteroids_lock);
     renderer.Render(asteroids);
     lock.unlock();
-    renderer.Render(rockets);
+    renderer.Render(spaceship->rockets);
     renderer.Render(); // Actual screen rendering
 }
 
 void Game::Update() {
 
     // Count rockets
-    if (rockets_amount != rockets.size())
+    if (rockets_amount != spaceship->rockets.size())
     {
         sound.Play(sound.shoot);
-        rockets_amount = rockets.size();
+        rockets_amount = spaceship->rockets.size();
     }
     // Move all objects
     std::vector<std::thread> moving_objects;
@@ -88,7 +88,7 @@ void Game::Update() {
     std::unique_lock<std::mutex> lock(asteroids_lock);
     Simulate(asteroids, moving_objects);
     lock.unlock();
-    Simulate(rockets, moving_objects);
+    Simulate(spaceship->rockets, moving_objects);
     for (auto &thread : moving_objects)
     {
         thread.join();
@@ -97,7 +97,7 @@ void Game::Update() {
 
     // Check hitboxes
     lock.lock();
-    for (auto &rocket : rockets)
+    for (auto &rocket : spaceship->rockets)
     {
         auto it = asteroids.begin();
         while (it != asteroids.end())
@@ -116,7 +116,7 @@ void Game::Update() {
         }
     }
     // Check hitboxes for ship, reset game if hit
-    bool reset;
+    bool reset = false;
     for (auto &asteroid : asteroids)
     {
         if (SDL_HasIntersection(asteroid->Box(), spaceship->Box()))
@@ -137,7 +137,6 @@ void Game::Reset()
         spaceship.reset(new Spaceship(screen_width/2, screen_height/2, 0));
         score = 0;
         asteroids.clear();
-        rockets.clear();
 }
 
 int Game::GetScore() const { return score; }

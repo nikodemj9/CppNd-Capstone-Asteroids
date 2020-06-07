@@ -35,9 +35,9 @@ void Spaceship::Accelerate(bool positive)
 
 }
 
-std::unique_ptr<Rocket> Spaceship::Shoot()
+void Spaceship::Shoot()
 {
-    return std::make_unique<Rocket>(hitbox.x+(hitbox.w/2), hitbox.y+(hitbox.h/2), angle, rockets_speed+speed);
+    rockets.emplace_back(std::make_unique<Rocket>(hitbox.x+(hitbox.w/2), hitbox.y+(hitbox.h/2), angle, rockets_speed+speed));
 }
 
 void Spaceship::Simulate()

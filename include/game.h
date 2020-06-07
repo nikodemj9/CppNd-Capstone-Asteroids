@@ -32,7 +32,6 @@ class Game {
         std::size_t screen_width, screen_height;
         std::unique_ptr<Spaceship> spaceship;
         std::vector<std::unique_ptr<Asteroid>> asteroids;
-        std::vector<std::unique_ptr<Rocket>> rockets;
         std::random_device dev;
         std::mt19937 engine;
         std::uniform_int_distribution<int> random_screen;

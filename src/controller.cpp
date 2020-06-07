@@ -17,12 +17,12 @@ void Controller::ChangeSpeed(Spaceship *spaceship, bool positive) const
     spaceship->Accelerate(positive);
 }
 
-void Controller::Shoot(Spaceship *spaceship, std::vector<std::unique_ptr<Rocket>> &rockets)
+void Controller::Shoot(Spaceship *spaceship)
 {
-    rockets.push_back(spaceship->Shoot());
+    spaceship->Shoot();
 }
 
-void Controller::HandleInput(bool &running, Spaceship *spaceship, std::vector<std::unique_ptr<Rocket>> &rockets) {
+void Controller::HandleInput(bool &running, Spaceship *spaceship) {
 
       while(SDL_PollEvent(event.get()))
       {
@@ -50,7 +50,7 @@ void Controller::HandleInput(bool &running, Spaceship *spaceship, std::vector<st
       }
       if (keyboard_state_array[SDL_SCANCODE_SPACE])
       {
-            Shoot(spaceship, rockets);
+            Shoot(spaceship);
       }
                  
    
